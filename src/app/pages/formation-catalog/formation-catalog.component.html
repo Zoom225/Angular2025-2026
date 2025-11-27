@@ -1,0 +1,92 @@
+<section class="space-y-4">
+  <header class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+    <div>
+      <h1 class="text-xl font-semibold text-slate-800">Catalogue des formations</h1>
+      <p class="text-sm text-slate-600">
+        Filtrez par titre, date, tag, prix, disponibilité, distance...
+      </p>
+    </div>
+  </header>
+
+  <div class="bg-white border border-slate-200 rounded-xl shadow-sm p-4 grid gap-4 md:grid-cols-3 lg:grid-cols-4">
+    <div>
+      <label class="block text-xs font-medium text-slate-500 mb-1">Titre</label>
+      <input [(ngModel)]="titleFilter"
+             (ngModelChange)="updateQueryParams()"
+             type="text"
+             class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+    </div>
+
+    <div>
+      <label class="block text-xs font-medium text-slate-500 mb-1">Tag</label>
+      <input [(ngModel)]="tagFilter"
+             (ngModelChange)="updateQueryParams()"
+             type="text"
+             class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+    </div>
+
+    <div>
+      <label class="block text-xs font-medium text-slate-500 mb-1">Date min</label>
+      <input [(ngModel)]="minDate"
+             type="date"
+             class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+    </div>
+
+    <div>
+      <label class="block text-xs font-medium text-slate-500 mb-1">Date max</label>
+      <input [(ngModel)]="maxDate"
+             type="date"
+             class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+    </div>
+
+    <div>
+      <label class="block text-xs font-medium text-slate-500 mb-1">Prix max (€)</label>
+      <input [(ngModel)]="maxPrice"
+             type="number"
+             min="0"
+             class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+    </div>
+
+    <div class="flex items-center gap-2">
+      <input id="onlyAvailable"
+             type="checkbox"
+             [(ngModel)]="onlyAvailable"
+             class="rounded border-slate-300">
+      <label for="onlyAvailable" class="text-xs font-medium text-slate-600">
+        Uniquement les formations avec des places disponibles
+      </label>
+    </div>
+
+    <div>
+      <app-distance-filter [(distance)]="maxDistance"></app-distance-filter>
+    </div>
+  </div>
+
+  <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <app-formation-card
+      *ngFor="let f of pagedFormations"
+      [formation]="f"
+      [showActions]="true">
+    </app-formation-card>
+  </div>
+
+  <div class="flex items-center justify-between mt-4 text-sm text-slate-600">
+    <div>
+      Page {{ page }} / {{ totalPages }}
+    </div>
+    <div class="flex gap-2">
+      <button type="button"
+              (click)="changePage(-1)"
+              [disabled]="page === 1"
+              class="px-3 py-1 rounded-lg border border-slate-300 disabled:opacity-40">
+        Précédent
+      </button>
+      <button type="button"
+              (click)="changePage(1)"
+              [disabled]="page === totalPages"
+              class="px-3 py-1 rounded-lg border border-slate-300 disabled:opacity-40">
+        Suivant
+      </button>
+    </div>
+  </div>
+</section>

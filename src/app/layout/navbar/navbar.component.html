@@ -1,0 +1,85 @@
+<nav class="navbar-3d">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="flex justify-between h-16 items-center">
+      <div class="flex items-center gap-3">
+        <div class="logo-3d">
+          <span class="logo-text">F</span>
+        </div>
+        <span class="font-bold text-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+          Formations
+        </span>
+      </div>
+
+      <div class="hidden md:flex items-center gap-2">
+        <a routerLink="" routerLinkActive="nav-link-active"
+           class="nav-link">
+          <span class="nav-icon">🏠</span>
+          <span>Accueil</span>
+        </a>
+        <a routerLink="/catalog" routerLinkActive="nav-link-active"
+           class="nav-link">
+          <span class="nav-icon">📚</span>
+          <span>Catalogue</span>
+        </a>
+        <a routerLink="/create" routerLinkActive="nav-link-active"
+           class="nav-link">
+          <span class="nav-icon">➕</span>
+          <span>Créer</span>
+        </a>
+        <a routerLink="/profile" routerLinkActive="nav-link-active"
+           class="nav-link">
+          <span class="nav-icon">👤</span>
+          <span>Profil</span>
+        </a>
+
+        <button type="button"
+                (click)="toggleRole()"
+                class="role-btn">
+          <span class="role-indicator" [class.admin]="user().role === 'admin'"></span>
+          {{ user().role === 'admin' ? 'Admin' : 'User' }}
+        </button>
+      </div>
+
+      <button type="button" class="mobile-menu-btn md:hidden"
+              (click)="toggleMenu()">
+        <span *ngIf="!isOpen()" class="menu-icon">☰</span>
+        <span *ngIf="isOpen()" class="menu-icon">✕</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="md:hidden mobile-menu" *ngIf="isOpen()">
+    <div class="mobile-menu-content">
+      <a routerLink="" routerLinkActive="nav-link-active"
+         (click)="toggleMenu()"
+         class="mobile-nav-link">
+        <span class="nav-icon">🏠</span>
+        <span>Accueil</span>
+      </a>
+      <a routerLink="/catalog" routerLinkActive="nav-link-active"
+         (click)="toggleMenu()"
+         class="mobile-nav-link">
+        <span class="nav-icon">📚</span>
+        <span>Catalogue</span>
+      </a>
+      <a routerLink="/create" routerLinkActive="nav-link-active"
+         (click)="toggleMenu()"
+         class="mobile-nav-link">
+        <span class="nav-icon">➕</span>
+        <span>Nouvelle formation</span>
+      </a>
+      <a routerLink="/profile" routerLinkActive="nav-link-active"
+         (click)="toggleMenu()"
+         class="mobile-nav-link">
+        <span class="nav-icon">👤</span>
+        <span>Profil</span>
+      </a>
+      <button type="button"
+              (click)="toggleRole()"
+              class="role-btn-mobile">
+        <span class="role-indicator" [class.admin]="user().role === 'admin'"></span>
+        Mode {{ user().role === 'admin' ? 'Admin' : 'User' }}
+      </button>
+    </div>
+  </div>
+</nav>

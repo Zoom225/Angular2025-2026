@@ -1,0 +1,97 @@
+<section class="space-y-4">
+  <a routerLink="/catalog" class="text-xs text-indigo-600 hover:underline">← Retour au catalogue</a>
+
+  <h1 class="text-xl font-semibold text-slate-800">Créer une formation</h1>
+
+  <form [formGroup]="form" (ngSubmit)="submit()"
+        class="bg-white border border-slate-200 rounded-xl shadow-sm p-4 space-y-4">
+
+    <div class="grid md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-xs font-medium text-slate-500 mb-1">Titre *</label>
+        <input formControlName="title"
+               type="text"
+               class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <p *ngIf="form.get('title')?.invalid && form.get('title')?.touched"
+           class="mt-1 text-[11px] text-red-600">
+          Titre obligatoire (max 100 caractères).
+        </p>
+      </div>
+
+      <div>
+        <label class="block text-xs font-medium text-slate-500 mb-1">Lieu *</label>
+        <input formControlName="place"
+               type="text"
+               class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+      </div>
+
+      <div>
+        <label class="block text-xs font-medium text-slate-500 mb-1">Date *</label>
+        <input formControlName="date"
+               type="date"
+               class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-medium text-slate-500 mb-1">Heure début *</label>
+          <input formControlName="startTime"
+                 type="time"
+                 class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-500 mb-1">Heure fin *</label>
+          <input formControlName="endTime"
+                 type="time"
+                 class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-medium text-slate-500 mb-1">Prix (€) *</label>
+        <input formControlName="price"
+               type="number"
+               min="0"
+               class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+      </div>
+
+      <div>
+        <label class="block text-xs font-medium text-slate-500 mb-1">Places max *</label>
+        <input formControlName="maxSeats"
+               type="number"
+               min="1"
+               class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+      </div>
+    </div>
+
+    <div class="space-y-2">
+      <label class="block text-xs font-medium text-slate-500">Tags (max 5)</label>
+      <div class="flex gap-2">
+        <input [(ngModel)]="newTag" name="newTag"
+               type="text"
+               class="flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+               placeholder="Ex : Angular, Tailwind...">
+        <button type="button"
+                (click)="addTag()"
+                class="px-3 py-2 rounded-lg bg-slate-100 text-xs font-medium">
+          Ajouter
+        </button>
+      </div>
+      <div class="flex flex-wrap gap-2 mt-1">
+        <span *ngFor="let tag of tagsArray.controls; let i = index"
+              class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-100 text-[11px]">
+          {{ tag.value }}
+          <button type="button" (click)="removeTag(i)">✕</button>
+        </span>
+      </div>
+    </div>
+
+    <div class="pt-2 flex justify-end">
+      <button type="submit"
+              [disabled]="form.invalid"
+              class="px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-medium disabled:opacity-40">
+        Créer
+      </button>
+    </div>
+  </form>
+</section>

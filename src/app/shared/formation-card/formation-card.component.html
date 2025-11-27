@@ -1,0 +1,53 @@
+<article
+  class="relative bg-white rounded-xl shadow-sm border p-4 flex flex-col gap-3
+         transition hover:shadow-md hover:-translate-y-0.5"
+  [ngClass]="{
+    'border-pink-500': isAngular()
+  }">
+
+  <div *ngIf="isFree()"
+       class="absolute -top-2 -left-2 bg-emerald-500 text-white text-xs font-semibold px-2 py-1 rounded-br-lg rounded-tl-lg">
+    Gratuit
+  </div>
+
+  <header class="space-y-1">
+    <h3 class="text-base font-semibold text-slate-800">
+      {{ formation().title }}
+    </h3>
+    <p class="text-xs text-slate-500 flex flex-wrap gap-x-3 gap-y-1">
+      <span>📍 {{ formation().place }}</span>
+      <span>📅 {{ formation().date }} {{ formation().startTime }}–{{ formation().endTime }}</span>
+      <span *ngIf="formation().distanceKm != null">📏 {{ formation().distanceKm }} km</span>
+    </p>
+  </header>
+
+  <div class="flex flex-wrap gap-1">
+    <span *ngFor="let tag of formation().tags"
+          class="inline-flex px-2 py-0.5 rounded-full text-[11px] font-medium bg-slate-100 text-slate-600">
+      #{{ tag }}
+    </span>
+  </div>
+
+  <div class="flex items-center justify-between text-sm">
+    <div class="font-semibold">
+      <span *ngIf="!isFree(); else freeTpl">
+        {{ formation().price | number:'1.0-0' }} €
+      </span>
+      <ng-template #freeTpl>Gratuit</ng-template>
+    </div>
+    <div class="text-xs text-slate-500">
+      {{ formation().participants.length }}/{{ formation().maxSeats }} participant(s)
+    </div>
+  </div>
+
+  <div *ngIf="showActions()" class="mt-2 flex gap-2">
+    <a [routerLink]="['/formation', formation().id]"
+       class="flex-1 inline-flex justify-center items-center px-3 py-1.5 rounded-lg text-xs font-medium border border-indigo-500 text-indigo-600 hover:bg-indigo-50">
+      Détails
+    </a>
+    <button *ngIf="formation().participants.length < formation().maxSeats"
+            class="flex-1 inline-flex justify-center items-center px-3 py-1.5 rounded-lg text-xs font-medium bg-indigo-600 text-white hover:bg-indigo-700">
+      S'inscrire
+    </button>
+  </div>
+</article>

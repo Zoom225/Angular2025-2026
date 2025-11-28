@@ -41,6 +41,9 @@ export class FormationCatalogComponent implements OnInit {
 
   get filteredFormations(): Formation[] {
     let list = [...this.formationsSignal()];
+    // AJOUT ICI : on enlève les formations cachées
+  list = list.filter(f => f.hidden !== true);
+
 
     if (this.titleFilter) {
       const t = this.titleFilter.toLowerCase();

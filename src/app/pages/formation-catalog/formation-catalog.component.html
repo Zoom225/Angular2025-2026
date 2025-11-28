@@ -58,7 +58,7 @@
     </div>
 
     <div>
-      <app-distance-filter [(distance)]="maxDistance"></app-distance-filter>
+      <app-distance-filter [distance]="maxDistance" (distanceChange)="maxDistance = $event"></app-distance-filter>
     </div>
   </div>
 

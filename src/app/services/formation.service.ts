@@ -45,6 +45,7 @@ export class FormationService {
       price: 250,
       maxSeats: 12,
       participants: []
+         
     },
     {
       id: 'f4',
@@ -57,7 +58,7 @@ export class FormationService {
       price: 300,
       maxSeats: 18,
       participants: [],
-     
+      hidden: true    // <= obligatoire pour la cacher
     },
 
   ]);

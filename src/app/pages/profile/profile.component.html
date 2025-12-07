@@ -1,55 +1,174 @@
-<section class="space-y-4 max-w-lg">
-  <h1 class="text-xl font-semibold text-slate-800">Profil utilisateur</h1>
+<section class="space-y-4 max-w-2xl mx-auto">
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-semibold text-slate-800">Profil utilisateur</h1>
+      <p class="text-sm text-slate-500 mt-1">{{ fullName() }}</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="px-3 py-1 rounded-full text-xs font-medium"
+            [class.bg-indigo-100]="isAdmin()"
+            [class.text-indigo-700]="isAdmin()"
+            [class.bg-slate-100]="!isAdmin()"
+            [class.text-slate-700]="!isAdmin()">
+        {{ isAdmin() ? 'Admin' : 'User' }}
+      </span>
+    </div>
+  </div>
 
-  <form (ngSubmit)="save()"
-        class="bg-white border border-slate-200 rounded-xl shadow-sm p-4 space-y-3">
+  <form [formGroup]="profileForm" 
+        (ngSubmit)="save()"
+        class="bg-white border border-slate-200 rounded-xl shadow-sm p-6 space-y-4">
 
-    <div class="grid md:grid-cols-2 gap-3">
+    <div class="grid md:grid-cols-2 gap-4">
+      <!-- Prénom -->
       <div>
-        <label class="block text-xs font-medium text-slate-500 mb-1">Prénom</label>
-        <input [(ngModel)]="model.firstName" name="firstName"
-               class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
+        <label for="firstName" class="block text-sm font-medium text-slate-700 mb-1">
+          Prénom <span class="text-red-500">*</span>
+        </label>
+        <input 
+          id="firstName"
+          formControlName="firstName"
+          type="text"
+          class="w-full rounded-lg border px-3 py-2 text-sm transition-colors"
+          [class.border-red-300]="hasError('firstName', 'required') || hasError('firstName', 'minlength')"
+          [class.border-slate-300]="!hasError('firstName', 'required') && !hasError('firstName', 'minlength')"
+          [class.focus:border-indigo-500]="!hasError('firstName', 'required') && !hasError('firstName', 'minlength')">
+        <p *ngIf="hasError('firstName', 'required')" 
+           class="mt-1 text-xs text-red-600">
+          {{ getErrorMessage('firstName') }}
+        </p>
+        <p *ngIf="hasError('firstName', 'minlength') && !hasError('firstName', 'required')" 
+           class="mt-1 text-xs text-red-600">
+          {{ getErrorMessage('firstName') }}
+        </p>
       </div>
+
+      <!-- Nom -->
       <div>
-        <label class="block text-xs font-medium text-slate-500 mb-1">Nom</label>
-        <input [(ngModel)]="model.lastName" name="lastName"
-               class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
+        <label for="lastName" class="block text-sm font-medium text-slate-700 mb-1">
+          Nom <span class="text-red-500">*</span>
+        </label>
+        <input 
+          id="lastName"
+          formControlName="lastName"
+          type="text"
+          class="w-full rounded-lg border px-3 py-2 text-sm transition-colors"
+          [class.border-red-300]="hasError('lastName', 'required') || hasError('lastName', 'minlength')"
+          [class.border-slate-300]="!hasError('lastName', 'required') && !hasError('lastName', 'minlength')"
+          [class.focus:border-indigo-500]="!hasError('lastName', 'required') && !hasError('lastName', 'minlength')">
+        <p *ngIf="hasError('lastName', 'required')" 
+           class="mt-1 text-xs text-red-600">
+          {{ getErrorMessage('lastName') }}
+        </p>
+        <p *ngIf="hasError('lastName', 'minlength') && !hasError('lastName', 'required')" 
+           class="mt-1 text-xs text-red-600">
+          {{ getErrorMessage('lastName') }}
+        </p>
       </div>
     </div>
 
+    <!-- Email -->
     <div>
-      <label class="block text-xs font-medium text-slate-500 mb-1">Email</label>
-      <input [(ngModel)]="model.email" name="email" type="email"
-             class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
+      <label for="email" class="block text-sm font-medium text-slate-700 mb-1">
+        Email <span class="text-red-500">*</span>
+      </label>
+      <input 
+        id="email"
+        formControlName="email"
+        type="email"
+        class="w-full rounded-lg border px-3 py-2 text-sm transition-colors"
+        [class.border-red-300]="hasError('email', 'required') || hasError('email', 'email')"
+        [class.border-slate-300]="!hasError('email', 'required') && !hasError('email', 'email')"
+        [class.focus:border-indigo-500]="!hasError('email', 'required') && !hasError('email', 'email')">
+      <p *ngIf="hasError('email', 'required')" 
+         class="mt-1 text-xs text-red-600">
+        {{ getErrorMessage('email') }}
+      </p>
+      <p *ngIf="hasError('email', 'email') && !hasError('email', 'required')" 
+         class="mt-1 text-xs text-red-600">
+        {{ getErrorMessage('email') }}
+      </p>
     </div>
 
+    <!-- Date de naissance -->
     <div>
-      <label class="block text-xs font-medium text-slate-500 mb-1">Date de naissance</label>
-      <input [(ngModel)]="model.birthDate" name="birthDate" type="date"
-             class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
+      <label for="birthDate" class="block text-sm font-medium text-slate-700 mb-1">
+        Date de naissance <span class="text-red-500">*</span>
+      </label>
+      <input 
+        id="birthDate"
+        formControlName="birthDate"
+        type="date"
+        class="w-full rounded-lg border px-3 py-2 text-sm transition-colors"
+        [class.border-red-300]="hasError('birthDate', 'required')"
+        [class.border-slate-300]="!hasError('birthDate', 'required')"
+        [class.focus:border-indigo-500]="!hasError('birthDate', 'required')">
+      <p *ngIf="hasError('birthDate', 'required')" 
+         class="mt-1 text-xs text-red-600">
+        {{ getErrorMessage('birthDate') }}
+      </p>
     </div>
 
+    <!-- Adresse -->
     <div>
-      <label class="block text-xs font-medium text-slate-500 mb-1">Adresse</label>
-      <input [(ngModel)]="model.address" name="address"
-             class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
+      <label for="address" class="block text-sm font-medium text-slate-700 mb-1">
+        Adresse <span class="text-red-500">*</span>
+      </label>
+      <input 
+        id="address"
+        formControlName="address"
+        type="text"
+        class="w-full rounded-lg border px-3 py-2 text-sm transition-colors"
+        [class.border-red-300]="hasError('address', 'required') || hasError('address', 'minlength')"
+        [class.border-slate-300]="!hasError('address', 'required') && !hasError('address', 'minlength')"
+        [class.focus:border-indigo-500]="!hasError('address', 'required') && !hasError('address', 'minlength')">
+      <p *ngIf="hasError('address', 'required')" 
+         class="mt-1 text-xs text-red-600">
+        {{ getErrorMessage('address') }}
+      </p>
+      <p *ngIf="hasError('address', 'minlength') && !hasError('address', 'required')" 
+         class="mt-1 text-xs text-red-600">
+        {{ getErrorMessage('address') }}
+      </p>
     </div>
 
+    <!-- Rôle (lecture seule) -->
     <div>
-      <label class="block text-xs font-medium text-slate-500 mb-1">Rôle</label>
-      <input [value]="userSignal().role"
-             disabled
-             class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm bg-slate-50 text-slate-500">
-      <p class="mt-1 text-[11px] text-slate-500">
+      <label class="block text-sm font-medium text-slate-700 mb-1">Rôle</label>
+      <input 
+        [value]="userSignal().role"
+        disabled
+        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm bg-slate-50 text-slate-600 cursor-not-allowed">
+      <p class="mt-1 text-xs text-slate-500">
         Utilisez le bouton dans le menu pour passer en mode admin / user.
       </p>
     </div>
 
-    <div class="pt-2 flex justify-end">
-      <button type="submit"
-              class="px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-medium">
-        Enregistrer
+    <!-- Actions -->
+    <div class="pt-4 flex flex-col sm:flex-row gap-3 justify-between items-center border-t border-slate-200">
+      <button 
+        type="button"
+        (click)="resetToDefault()"
+        class="px-4 py-2 rounded-lg border border-slate-300 text-slate-700 text-sm font-medium hover:bg-slate-50 transition-colors">
+        Réinitialiser
       </button>
+      
+      <div class="flex gap-3">
+        <button 
+          type="button"
+          (click)="reset()"
+          [disabled]="!hasChanges()"
+          class="px-4 py-2 rounded-lg border border-slate-300 text-slate-700 text-sm font-medium hover:bg-slate-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+          Annuler
+        </button>
+        <button 
+          type="submit"
+          [disabled]="profileForm.invalid || isSaving() || !hasChanges()"
+          class="px-6 py-2 rounded-lg bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+          <span *ngIf="!isSaving()">Enregistrer</span>
+          <span *ngIf="isSaving()">Enregistrement...</span>
+        </button>
+      </div>
     </div>
   </form>
 </section>

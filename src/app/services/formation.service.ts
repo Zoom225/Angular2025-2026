@@ -1,4 +1,4 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable, computed, signal, effect } from '@angular/core';
 import { Formation, Participant } from '../models/formation.model';
 import { UserService } from './user.service';
 import { DistanceService } from './distance.service';
@@ -76,6 +76,13 @@ export class FormationService {
     private readonly snackBar: MatSnackBar
   ) {
     this._recomputeDistances();
+    
+    // Recalculer les distances automatiquement quand l'adresse de l'utilisateur change
+    effect(() => {
+      // Accéder au signal pour déclencher l'effet
+      this.userService.user();
+      this._recomputeDistances();
+    });
   }
 
   private _recomputeDistances(): void {
